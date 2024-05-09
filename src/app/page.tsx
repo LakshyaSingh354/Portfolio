@@ -1,6 +1,6 @@
 "use client";
 
-import { Hero } from "../../components/hero";
+import { Hero, Skills } from "../../components/hero";
 import { Navbar } from "../../components/navbar";
 import { TracingBeam } from "../../components/ui/tracing-beam";
 
@@ -20,7 +20,7 @@ function MainContent() {
     <TracingBeam className="">
       <div className="relative antialiased">
         <Hero />
-        
+
         {/* <div className="h-screen bg-blue-600"></div> */}
       </div>
     </TracingBeam>
