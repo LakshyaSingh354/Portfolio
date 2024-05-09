@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Lakshya Singh",
-  icons: ['favicon.ico'],
+  // icons: "public/favicon.ico",
 };
 
 export default function RootLayout({
