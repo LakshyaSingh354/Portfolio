@@ -7,8 +7,8 @@ import { TracingBeam } from "../../components/ui/tracing-beam";
 export default function Home() {
   return (
     <div>
-      <div className="relative w-8/12 sm:w-0.5 flex items-center justify-center p-10 mx-2 sm:mx-8">
-        <Navbar className="top-2" />
+      <div className="relative bg-lack sm:w-8/12 w-1/3 flex items-center justify-center p-10 mx-2 sm:mx-8">
+        <Navbar className="top-2 bg-black w-5/6" />
       </div>
       <MainContent />
     </div>

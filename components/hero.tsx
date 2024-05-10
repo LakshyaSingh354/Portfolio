@@ -23,7 +23,7 @@ export function Hero() {
   return (
     <div>
       <div>
-        <div className="flex flex-col sm:flex-row justify-around p-8">
+        <div className="flex flex-col sm:flex-row justify-around sm:p-8 p-12">
           <div className={`sm:w-5/6`}>
             <div className={`text-3xl font-bold pt-12 ${orbitron.className}`}>
               I&apos;m Lakshya Singh,
@@ -46,7 +46,7 @@ export function Hero() {
               field and our understanding of the cosmos.
             </div>
           </div>
-          <div className="mt-44">
+          <div className="sm:mt-44 mt-6">
             <Link href={"mailto:lakshyasingh354@gmail.com"}>
               <button className="relative inline-flex h-14 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
