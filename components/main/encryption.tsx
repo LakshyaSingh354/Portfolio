@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-import { slideInFromTop } from "@/lib/motion";
+import { slideInFromTop } from "../../lib/motion";
 
 export const Encryption = () => {
   return (
