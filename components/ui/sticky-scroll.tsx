@@ -3,7 +3,6 @@ import React, { useRef } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
-import { TracingBeam } from "./tracing-beam";
 import Link from "next/link";
 
 export const StickyScroll = ({
@@ -11,6 +10,7 @@ export const StickyScroll = ({
   contentClassName,
 }: {
   content: {
+    id: string;
     title: string;
     description: string;
     content?: React.ReactNode | any;
@@ -73,7 +73,7 @@ export const StickyScroll = ({
                   }}
                   className="text-2xl font-bold text-slate-100"
                   >
-                  <Link href={`/projects/`}>
+                  <Link href={`/projects/${item.id}`}>
                   {item.title}
               </Link>
                 </motion.h2>
@@ -102,7 +102,7 @@ export const StickyScroll = ({
             contentClassName
             )}
             >
-          <Link href={`/projects/`}>
+          <Link href={`/projects/${content[activeCard].id}`}>
           {content[activeCard].content ?? null}
       </Link>
         </motion.div>

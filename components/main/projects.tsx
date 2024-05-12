@@ -35,7 +35,8 @@ export const Projects = () => {
           //   description={project.description}
           //   link={project.link}
           // />
-          <CardContainer key={project.title} className="inter-var">
+          <Link href={`/projects/${project.id}`} key={project.id}>
+          <CardContainer  className="inter-var">
             <CardBody className="relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] bg-black border-white/[0.2] w-auto sm:w-[25rem] h-auto sm:h-[40rem] rounded-xl p-8 border">
               <ProjectCard
                 src={project.image}
@@ -45,6 +46,7 @@ export const Projects = () => {
               />
             </CardBody>
           </CardContainer>
+          </Link>
         ))}
       </div>
     </section>

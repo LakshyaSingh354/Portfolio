@@ -1,6 +1,5 @@
 "use client";
 
-// import { Hero, Skills } from "../../components/hero";
 import { Hero } from "../../components/main/hero";
 import { Navbar } from "../../components//main/navbar";
 import { TracingBeam } from "../../components/ui/tracing-beam";
@@ -10,9 +9,7 @@ import { Projects } from "../../components/main/projects";
 export default function Home() {
   return (
     <div>
-      {/* <div className="relative bg-lack sm:w-8/12 w-1/3 flex items-center justify-center p-10 mx-2 sm:mx-8"> */}
-        <Navbar />
-      {/* </div> */}
+      <Navbar />
       <MainContent />
     </div>
   );
@@ -25,7 +22,6 @@ function MainContent() {
         <Hero />
         <Skills />
         <Projects />
-        {/* <div className="h-screen bg-blue-600"></div> */}
       </div>
     </TracingBeam>
   );
