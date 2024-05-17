@@ -9,7 +9,7 @@ export const Navbar = () => {
       <div className="w-full h-full flex flex-row items-center justify-between m-auto px-[10px]">
         <Link
           href="/"
-          className="h-auto w-auto flex flex-row items-center"
+          className="h-auto w-auto hidden sm:flex flex-row items-center"
         >
           <Image
             src="/logo.png"
@@ -24,31 +24,31 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        <div className="w-[400px] h-full flex flex-row items-center justify-between md:mr-20">
-          <div className="flex items-center justify-between sm:w-full w-screen h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] mr-[15px] px-[20px] py-[10px] rounded-full text-gray-200">
+        <div className="sm:w-[400px] w-fit h-full flex flex-row items-center justify-between md:mr-20">
+          <div className="flex items-center justify-between w-fit h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] sm:mr-[15px] sm:px-[20px] py-[10px] rounded-full text-gray-200">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.title}
                 href={link.link}
-                className="cursor-pointer hover:text-[rgb(112,66,248)] transition"
+                className="cursor-pointer hover:text-[rgb(112,66,248)] transition whitespace-nowrap mx-5"
               >
                 {link.title}
               </Link>
             ))}
 
             {/* source code */}
-            <Link
+            {/* <Link
               href="/Resume.pdf"
               target="_blank"
               rel="noreferrer noopener"
               className="cursor-pointer hover:text-[rgb(112,66,248)] transition"
             >
               Resume
-            </Link>
+            </Link> */}
           </div>
         </div>
 
-        <div className="flex flex-row gap-5 w-0 sm:w-fit">
+        <div className="hidden sm:flex flex-row gap-5 w-0 sm:w-fit">
           {SOCIALS.map(({ link, name, icon: Icon }) => (
             <Link
               href={link}
