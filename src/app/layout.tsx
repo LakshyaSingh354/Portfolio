@@ -14,6 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Lakshya Singh",
+  description: "Personal portfolio of Lakshya Singh. Lakshya Singh AI portfolio.",
   icons: { icon: "src/app/favicon.ico" },
 };
 
