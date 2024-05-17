@@ -24,8 +24,8 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        <div className="w-[500px] h-full flex flex-row items-center justify-between md:mr-20">
-          <div className="flex items-center justify-between w-full h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] mr-[15px] px-[20px] py-[10px] rounded-full text-gray-200">
+        <div className="w-[400px] h-full flex flex-row items-center justify-between md:mr-20">
+          <div className="flex items-center justify-between sm:w-full w-screen h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] mr-[15px] px-[20px] py-[10px] rounded-full text-gray-200">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.title}
@@ -48,7 +48,7 @@ export const Navbar = () => {
           </div>
         </div>
 
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5 w-0 sm:w-fit">
           {SOCIALS.map(({ link, name, icon: Icon }) => (
             <Link
               href={link}
@@ -56,7 +56,7 @@ export const Navbar = () => {
               rel="noreferrer noopener"
               key={name}
             >
-              <Icon className="h-6 w-6 text-white" />
+              <Icon className="sm:h-6 h-0 sm:w-6 w-0 text-white" />
             </Link>
           ))}
         </div>
