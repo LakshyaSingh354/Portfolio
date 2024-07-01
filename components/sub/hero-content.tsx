@@ -24,9 +24,7 @@ export const HeroContent = () => {
           className="Welcome-box py-[8px] px-[7px] border border-[#7042f88b] opacity-[0.9]]"
         >
           <SparklesIcon className="text-[#b49bff] mr-[10px] h-5 w-5" />
-          <h1 className="Welcome-text text-[13px]">
-            About Me
-          </h1>
+          <h1 className="Welcome-text text-[13px]">About Me</h1>
         </motion.div>
 
         <motion.div
@@ -36,7 +34,7 @@ export const HeroContent = () => {
           <span>
             I{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-            Teach Machines
+              Teach Machines
             </span>{" "}
             to Think (Almost)
           </span>
@@ -49,12 +47,12 @@ export const HeroContent = () => {
           I&apos;m a CS undergraduate driven by an unwavering passion for
           artificial intelligence. I&apos;m particularly fascinated by its
           potential to solve complex problems and make groundbreaking
-          discoveries when applied to astronomy. I possess working knowledge in
-          image processing, natural language processing, and an understanding of
-          reinforcement learning principles. My ongoing projects and self-study
-          keep my skills sharp. An avid reader with a curious mind, I&apos;m
-          committed to becoming a skilled AI practitioner who can contribute to
-          the advancement of both the field and our understanding of the cosmos.
+          discoveries when applied to science. I possess working knowledge in
+          Computer Vision, Natural Language Processing, and Reinforcement
+          Learning. My ongoing projects and self-study keep my skills sharp. An
+          avid reader with a curious mind, I&apos;m committed to becoming a
+          skilled AI practitioner who can contribute to the advancement of both
+          the field and our understanding of the reality.
         </motion.p>
 
         <motion.a
