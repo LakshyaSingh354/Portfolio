@@ -13,6 +13,7 @@ type ProjectCardProps = {
   title: string;
   description: string;
   link: string;
+  github_link: string;
 };
 
 export const ProjectCard = ({
@@ -21,13 +22,13 @@ export const ProjectCard = ({
   img_w,
   title,
   description,
-  link,
+  github_link,
 }: ProjectCardProps) => {
   const router = useRouter();
 
   const handleIconClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Stop event propagation to prevent card click
-    router.push("https://github.com/LakshyaSingh354/Manga-Colouring");
+    router.push(github_link);
   };
   return (
     <div className="relative overflow-hidden rounded-lg shadow-lg border border-[#2A0E61]">
