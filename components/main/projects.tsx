@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { slideInFromRight } from "../../lib/motion";
 import Link from "next/link";
 
+
+
 export const Projects = () => {
   return (
     <section
@@ -26,7 +28,7 @@ export const Projects = () => {
           </div>
         </Link>
       </div>
-      <div className="h-full w-full flex flex-col md:flex-row gap-10 px-10">
+      <div className="h-full w-full justify-center flex flex-col md:flex-row gap-10 px-10">
         {PROJECTS.map((project) => (
           // <ProjectCard
           //   key={project.title}
@@ -35,11 +37,13 @@ export const Projects = () => {
           //   description={project.description}
           //   link={project.link}
           // />
-          <Link href={`/projects/${project.id}`} key={project.id}>
+          <Link href={`/projects/${project.link}`} key={project.id}>
           <CardContainer  className="inter-var">
             <CardBody className="relative group/card hover:shadow-2xl hover:shadow-emerald-500/[0.1] bg-black border-white/[0.2] w-auto sm:w-[25rem] h-auto sm:h-[40rem] rounded-xl p-8 border">
               <ProjectCard
                 src={project.image}
+                img_h={project.img_h}
+                img_w={project.img_w}
                 title={project.title}
                 description={project.description}
                 link={project.link}

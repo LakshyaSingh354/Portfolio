@@ -57,7 +57,6 @@ export const SKILL_DATA = [
     width: 80,
     height: 80,
   },
-  
 ] as const;
 
 export const SOCIALS = [
@@ -256,116 +255,46 @@ export const OTHER_SKILL = [
     width: 80,
     height: 80,
   },
-  
 ] as const;
 
 export const PROJECTS = [
   {
-    id: 'project-1',
-    title: "Modern Next.js 14 Portfolio",
+    id: "manga-coloring",
+    title: "Manga Colouring Using DeepLearning",
     description:
-      'Embark on a journey through my professional evolution with the "Modern Next.js Portfolio" - a dynamic showcase of my skills, experiences, and passion for web development. Crafted with precision and powered by Next.js, this portfolio is more than just a static display; it\'s an immersive experience that reflects the cutting edge of modern web technologies.',
-    image: "/projects/project-1.png",
-    link: "https://example.com",
+      "Leveraging deep learning techniques, this project transforms black-and-white manga images into vibrant colorized versions. Using a custom model trained on the Lab color space, it predicts color distributions for each pixel, producing realistic and visually appealing results. Explore the process, challenges, and outcomes of bringing historical photos and monochromatic images to life with advanced neural networks.",
+    image: "/projects/manga-colouring/cover.png",
+    img_h: 150,
+    img_w: 350,
+    link: "/projects/manga-coloring",
+    github_link: "https://github.com/LakshyaSingh354/Manga-Colouring",
   },
-  {
-    id: 'project-2',
-    title: "Interactive Cards Portfolio",
-    description:
-      'Step into the extraordinary world of my professional journey through the "Interactive Cards Portfolio" - an innovative and visually captivating platform that redefines the traditional portfolio experience. Ditching the conventional static layout, this portfolio leverages interactive cards to showcase my skills, projects, and personality in an engaging and dynamic manner.',
-    image: "/projects/project-2.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-3',
-    title: "Space Themed Website",
-    description:
-      'Embark on an interstellar journey with my "Space Themed Website", a mesmerizing space-themed website that invites you to explore the cosmic wonders beyond our world. Immerse yourself in an awe-inspiring digital experience that blends cutting-edge design with the mysteries of the universe.',
-    image: "/projects/project-3.png",
-    link: "https://example.com",
-  },
+  // {
+  //   id: 'project-2',
+  //   title: "Interactive Cards Portfolio",
+  //   description:
+  //     'Step into the extraordinary world of my professional journey through the "Interactive Cards Portfolio" - an innovative and visually captivating platform that redefines the traditional portfolio experience. Ditching the conventional static layout, this portfolio leverages interactive cards to showcase my skills, projects, and personality in an engaging and dynamic manner.',
+  //   image: "/projects/project-2.png",
+  //   link: "https://example.com",
+  // },
+  // {
+  //   id: 'project-3',
+  //   title: "Space Themed Website",
+  //   description:
+  //     'Embark on an interstellar journey with my "Space Themed Website", a mesmerizing space-themed website that invites you to explore the cosmic wonders beyond our world. Immerse yourself in an awe-inspiring digital experience that blends cutting-edge design with the mysteries of the universe.',
+  //   image: "/projects/project-3.png",
+  //   link: "https://example.com",
+  // },
 ] as const;
 
 export const PROJECTS_ALL = [
   {
-    id: 'project-1',
-    title: "Modern Next.js 14 Portfolio",
-    desc:
-      'Embark on a journey through my professional evolution with the "Modern Next.js Portfolio" - a dynamic showcase of my skills, experiences, and passion for web development. Crafted with precision and powered by Next.js, this portfolio is more than just a static display; it\'s an immersive experience that reflects the cutting edge of modern web technologies.',
-    image: "/projects/project-1.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-2',
-    title: "Interactive Cards Portfolio",
-    desc:
-      'Step into the extraordinary world of my professional journey through the "Interactive Cards Portfolio" - an innovative and visually captivating platform that redefines the traditional portfolio experience. Ditching the conventional static layout, this portfolio leverages interactive cards to showcase my skills, projects, and personality in an engaging and dynamic manner.',
-    image: "/projects/project-2.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-3',
-    title: "Space Themed Website",
-    desc:
-      'Embark on an interstellar journey with my "Space Themed Website", a mesmerizing space-themed website that invites you to explore the cosmic wonders beyond our world. Immerse yourself in an awe-inspiring digital experience that blends cutting-edge design with the mysteries of the universe.',
-    image: "/projects/project-3.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-4',
-    title: "Modern Next.js 14 Portfolio",
-    desc:
-      'Embark on a journey through my professional evolution with the "Modern Next.js Portfolio" - a dynamic showcase of my skills, experiences, and passion for web development. Crafted with precision and powered by Next.js, this portfolio is more than just a static display; it\'s an immersive experience that reflects the cutting edge of modern web technologies.',
-    image: "/projects/project-1.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-5',
-    title: "Interactive Cards Portfolio",
-    desc:
-      'Step into the extraordinary world of my professional journey through the "Interactive Cards Portfolio" - an innovative and visually captivating platform that redefines the traditional portfolio experience. Ditching the conventional static layout, this portfolio leverages interactive cards to showcase my skills, projects, and personality in an engaging and dynamic manner.',
-    image: "/projects/project-2.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-6',
-    title: "Space Themed Website",
-    desc:
-      'Embark on an interstellar journey with my "Space Themed Website", a mesmerizing space-themed website that invites you to explore the cosmic wonders beyond our world. Immerse yourself in an awe-inspiring digital experience that blends cutting-edge design with the mysteries of the universe.',
-    image: "/projects/project-3.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-7',
-    title: "Modern Next.js 14 Portfolio",
-    desc:
-      'Embark on a journey through my professional evolution with the "Modern Next.js Portfolio" - a dynamic showcase of my skills, experiences, and passion for web development. Crafted with precision and powered by Next.js, this portfolio is more than just a static display; it\'s an immersive experience that reflects the cutting edge of modern web technologies.',
-    image: "/projects/project-1.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-8',
-    title: "Interactive Cards Portfolio",
-    desc:
-      'Step into the extraordinary world of my professional journey through the "Interactive Cards Portfolio" - an innovative and visually captivating platform that redefines the traditional portfolio experience. Ditching the conventional static layout, this portfolio leverages interactive cards to showcase my skills, projects, and personality in an engaging and dynamic manner.',
-    image: "/projects/project-2.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-9',
-    title: "Space Themed Website",
-    desc:
-      'Embark on an interstellar journey with my "Space Themed Website", a mesmerizing space-themed website that invites you to explore the cosmic wonders beyond our world. Immerse yourself in an awe-inspiring digital experience that blends cutting-edge design with the mysteries of the universe.',
-    image: "/projects/project-3.png",
-    link: "https://example.com",
-  },
-  {
-    id: 'project-10',
-    title: "Modern Next.js 14 Portfolio",
-    desc:
-      'Embark on a journey through my professional evolution with the "Modern Next.js Portfolio" - a dynamic showcase of my skills, experiences, and passion for web development. Crafted with precision and powered by Next.js, this portfolio is more than just a static display; it\'s an immersive experience that reflects the cutting edge of modern web technologies.',
-    image: "/projects/project-1.png",
-    link: "https://example.com",
+    id: "manga-coloring",
+    title: "Manga Colouring Using DeepLearning",
+    description:
+      "Leveraging deep learning techniques, this project transforms black-and-white manga images into vibrant colorized versions. Using a custom model trained on the Lab color space, it predicts color distributions for each pixel, producing realistic and visually appealing results. Explore the process, challenges, and outcomes of bringing historical photos and monochromatic images to life with advanced neural networks.",
+      image: "/projects/manga-colouring/cover.png",
+      link: "/projects/manga-coloring",
   },
 ];
 
@@ -448,7 +377,7 @@ export const NAV_LINKS = [
   {
     title: "Resume",
     link: "/Resume.pdf",
-  }
+  },
 ] as const;
 
 export const LINKS = {
