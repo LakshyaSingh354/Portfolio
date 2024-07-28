@@ -266,7 +266,7 @@ export const PROJECTS = [
     image: "/projects/manga-colouring/cover.png",
     img_h: 150,
     img_w: 350,
-    link: "/projects/manga-coloring",
+    link: "/manga-coloring",
     github_link: "https://github.com/LakshyaSingh354/Manga-Colouring",
   },
   // {
