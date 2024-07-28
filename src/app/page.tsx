@@ -10,7 +10,7 @@ import 'prismjs';
 import 'prismjs/components/prism-python';
 import { AppProps } from 'next/app';
 
-export default function Home({ Component, pageProps }: AppProps) {
+export default function Home() {
   return (
     <div>
       <Navbar />
