@@ -212,7 +212,7 @@ export default function ProjectPage({ params }: { params: any }) {
             </p>
             <p className="mt-2">
               However, the model in the paper treats the problem as a
-              classification task and uses a custom loss function which a
+              classification task and uses a custom loss function which is a
               variation of categorical crossentropy loss. They quantise the ‘a’
               and ‘b’ channels into bins and predict the probability of each bin
               for every pixel. This approach is more robust and produces more
