@@ -399,7 +399,7 @@ export default function ProjectPage({ params }: { params: any }) {
             <p>
               The model performs fairly well on the task of colouring manga
               images, but there is still room for improvement. It is correctly
-              predicting the areas to colour in unable to accurately predict the
+              predicting the areas to colour but is unable to accurately predict the
               exact colour, this may be due to lack of diversity of colour in
               the dataset. The model could be trained on a larger and more
               diverse dataset to improve its generalisation.
