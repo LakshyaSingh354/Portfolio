@@ -339,26 +339,26 @@ export const FOOTER_DATA = [
       },
     ],
   },
-  {
-    title: "About",
-    data: [
-      {
-        name: "Become Sponsor",
-        icon: null,
-        link: "",
-      },
-      // {
-      //   name: "Learning about me",
-      //   icon: null,
-      //   link: "https://example.com",
-      // },
-      {
-        name: "Contact Me",
-        icon: null,
-        link: "mailto:lakshya.singh354@gmail.com",
-      },
-    ],
-  },
+  // {
+  //   title: "About",
+  //   data: [
+  //     {
+  //       name: "Become Sponsor",
+  //       icon: null,
+  //       link: "",
+  //     },
+  //     // {
+  //     //   name: "Learning about me",
+  //     //   icon: null,
+  //     //   link: "https://example.com",
+  //     // },
+  //     {
+  //       name: "Contact Me",
+  //       icon: null,
+  //       link: "mailto:lakshya.singh354@gmail.com",
+  //     },
+  //   ],
+  // },
 ] as const;
 
 export const NAV_LINKS = [
