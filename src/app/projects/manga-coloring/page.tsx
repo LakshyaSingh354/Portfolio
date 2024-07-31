@@ -5,53 +5,59 @@ import CodeBlock from "../../../../components/codeblock";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 const code1 = `
-def quantize_ab_image(ab_image):
-    return np.floor_divide(ab_image, 10) * 10
+def quantize(ab_img):
+    return np.floor_divide(ab_img, 10) * 10
     
-def set_possible_colors(height=256, width=256, save_files=False):
-        ab_color_to_possible_color_idx = {}
-        all_images = os.listdir("images")
-        color_index = 0
+def set_possible_colors():
+  height, width = 256, 256
+  ab_to_possible_color = {}
+  all_images = os.listdir("images")
+  color_index = 0
 
-        for image in tqdm(all_images, desc="Processing Images"):
-            rgb_image = np.array(Image.open(f"images/{image}").convert("RGB"))
-            ab_image = extract_ab_channels(rgb_image)
-            quantized_ab_image = quantize_ab_image(ab_image)
+  for image in all_images:
+    rgb_image = np.array(
+      Image.open(f"images/{image}")
+      .convert("RGB"))
+    ab_img = extract_ab(rgb_image)
+    quantized_image = quantize_(ab_img)
 
-            for y in range(height):
-                for x in range(width):
-                    a_color = quantized_ab_image[y][x][0]
-                    b_color = quantized_ab_image[y][x][1]
-                    color_key = get_color_key(a_color, b_color)
+    for y in range(height):
+      for x in range(width):
+        a = quantized_ab_image[y][x][0]
+        b = quantized_ab_image[y][x][1]
+        ck = get_color_key(a, b)
 
-                    if color_key not in ab_color_to_possible_color_idx:
-                        ab_color_to_possible_color_idx[color_key] = color_index
-                        color_index += 1
-
-        print("Done setting possible colors.")
-        print(f"Number of possible colors: {len(ab_color_to_possible_color_idx)}")
-        if save_files:
-          pickle.dump(ab_color_to_possible_color_idx, open("ab_to_q_index_dict.p", "wb"))
+        if ck not in ab_to_possible_color:
+          ab_to_possible_color[ck] = color_index
+          color_index += 1
+  if save_files:
+    pickle.dump(ab_to_possible_color,
+      open("ab_to_q_index_dict.p", "wb"))
 `;
 const code2 = `
-def ab_to_z(ab_image, Q, sigma=5):
-    w, h = ab_image.shape[0], ab_image.shape[1]
-    points = w * h
-    ab_images_flat = np.reshape(ab_image, (points, 2))
-    points_encoded_flat = np.empty((points, Q))
-    points_indices = np.arange(0, points, dtype='int')[:, np.newaxis]
+def ab_to_z(ab_img, Q, sigma=5):
+    w, h = ab_img.shape[0], ab_img.shape[1]
+    pts = w * h
+    ab_img_flat = np.reshape(ab_img, (pts, 2))
+    pts_flat = np.empty((pts, Q))
+    pts_ind = np.arange(0, pts)
 
-    nbrs = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(get_ab_domain())
-    distances, indices = nbrs.kneighbors(ab_images_flat)
+    nbrs = NearestNeighbors(
+      n_neighbors=5, algorithm='ball_tree')
+      .fit(get_ab_domain())
+    distances, _ = nbrs.kneighbors(ab_img_flat)
 
-    gaussian_kernel = np.exp(-distances**2 / (2 * sigma**2))
-    gaussian_kernel = gaussian_kernel / np.sum(gaussian_kernel, axis=1)[:, np.newaxis]
+    gaussian_kernel = np.exp(
+      -distances**2 / (2 * sigma**2)
+    )
+    gaussian_kernel /= np.sum(gaussian_kernel,1)
 
-    points_encoded_flat[points_indices, indices] = gaussian_kernel
-    points_encoded = np.reshape(points_encoded_flat, (w, h, Q))
+    pts_flat[pts_ind, ind] = gaussian_kernel
+    z = np.reshape(pts_flat, (w, h, Q))
+
     return z
 `;
-const code3 = `def multinomial_crossentropy_loss(Z, Z_hat, batch_size=32):
+const code3 = `def multinomial_crossentropy_loss(Z, Z_hat):
     Q = len(get_ab_to_q_dict())
     p = pickle.load(open("p_10000.p", "rb"))
     p_tilde = gaussian_filter(p, sigma=5)
@@ -60,75 +66,77 @@ const code3 = `def multinomial_crossentropy_loss(Z, Z_hat, batch_size=32):
     log = tf.math.log(Z_hat + eps)
     mul = log * Z
     summ = tf.reduce_sum(mul, 1) 
-    loss = -tf.reduce_sum(weights * summ) / batch_size
+    loss = -tf.reduce_sum(weights * summ)
 
     return loss`;
 const code4 = `def ColourNet():
     input_tensor = Input(shape=(256, 256, 1))
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='conv1_1', 
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(input_tensor)
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='conv1_2', 
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg, strides=(2, 2))(x)
+    x = Conv2D(64, (3, 3),'relu', 'same', 
+            "he_normal", l2_reg)(input_tensor)
+    x = Conv2D(64, (3, 3),'relu', 'same', 
+            "he_normal", l2_reg, (2, 2))(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='conv2_1', 
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='conv2_2', 
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg, strides=(2, 2))(x)
+    x = Conv2D(128, (3, 3),'relu', 'same', 
+            "he_normal", l2_reg)(x)
+    x = Conv2D(128, (3, 3),'relu', 'same', 
+            "he_normal", l2_reg, (2, 2))(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv3_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv3_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv3_3', 
-            kernel_initializer="he_normal", strides=(2, 2))(x)
+    x = Conv2D(256, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(256, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(256, (3, 3),'relu', 'same', 
+            "he_normal", (2, 2))(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='conv4_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='conv4_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='conv4_3',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv5_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv5_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv5_3',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv6_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv6_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', dilation_rate=2, name='conv6_3',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
+    x = Conv2D(512, (3, 3),'relu', 'same', 
+      dilation_rate=2, "he_normal", l2_reg)(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv7_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv7_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='conv7_3',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
+    x = Conv2D(256, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(256, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(256, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
     x = BatchNormalization()(x)
 
     x = UpSampling2D(size=(2, 2))(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='conv8_1',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='conv8_2',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='conv8_3',
-            kernel_initializer="he_normal", kernel_regularizer=l2_reg)(x)
+    x = Conv2D(128, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(128, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
+    x = Conv2D(128, (3, 3),'relu', 'same',
+            "he_normal", l2_reg)(x)
     x = BatchNormalization()(x)
 
-    x = Conv2D(274, (1, 1), activation='softmax', padding='same', name='pred')(x)
-    outputs = UpSampling2D(size=(4, 4), interpolation='bilinear')(x)
-    model = Model(inputs=input_tensor, outputs=outputs, name="ColourNet")
+    x = Conv2D(274, (1, 1),'softmax', 'same')(x)
+    outputs = UpSampling2D(size=(4, 4), 
+      interpolation='bilinear')(x)
+    model = Model(input_tensor, outputs)
+
     return model`;
 const code5 = `def temperature_scaling(Z, T):
     Z = np.exp(np.log(Z) / T)
@@ -147,14 +155,14 @@ def convert_Z_to_ab(Z, ab_domain, T=0.38):
 export default function ProjectPage({ params }: { params: any }) {
   return (
     <div className="relative">
-      <div className="absolute inset-0 bg-black opacity-60"></div>
+      <div className="absolute inset-0 bg-black opacity-60 w-full"></div>
       <div className="relative z-10">
         <div className="mt-28 w-screen flex flex-col items-center">
-          <div className="w-auto text-6xl text-white font-extrabold">
+          <div className="sm:w-auto sm:px-0 px-10 text-6xl text-white font-extrabold">
             Colouring Manga Using Deep Learning
           </div>
         </div>
-        <div className="flex justify-center items-center mt-20">
+        <div className="flex justify-center items-center mt-20 sm:px-0 px-10">
           <Image
             src={"/projects/manga-colouring/cover.png"}
             alt={"cover-image"}
@@ -162,8 +170,8 @@ export default function ProjectPage({ params }: { params: any }) {
             height={300}
           />
         </div>
-        <div className="mt-14">
-          <div className="mx-24 text-xl">
+        <div className="mt-14 sm:w-auto w-screen">
+          <div className="sm:mx-24 mx-4 text-xl">
             In this project I explore the use of Deep Learning, specifically
             Convolutional Neural Networks (CNNs) to colour manga images. The
             project is inspired by the paper titled{" "}
@@ -179,17 +187,17 @@ export default function ProjectPage({ params }: { params: any }) {
             were quite impressive, and I was able to achieve a good level of
             colouring on the images.
           </div>
-          <div className="mt-4 mx-24 text-xl">
+          <div className="mt-4 sm:sm:mx-24 mx-4 m-4 text-xl">
             The model in the paper is trained on the ImageNet dataset, which is
             a more general dataset than the one required for the task of
             colouring manga images. But thankfully the dataset required for the
             task of colouring is not hard to curate, only coloured images are
             required and features and labels can be extracted from them.
           </div>
-          <div className="mt-14 mx-24 text-4xl font-bold">
+          <div className="mt-14 sm:sm:mx-24 mx-4 text-4xl font-bold">
             Creating Training Data:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:sm:mx-24 mx-4 m-4 text-xl">
             The images required are obtained by writing a web-scraping python
             script that automatically searches and downloads tagged images from
             the imaging hosting website, Danbooru. Danbooru is ideal for this
@@ -200,8 +208,8 @@ export default function ProjectPage({ params }: { params: any }) {
             colour space. The L channel is used as the input to the model, and
             the AB channels are used as the labels.
           </div>
-          <div className="mt-14 mx-24 text-4xl font-bold">Model Details:</div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-14 sm:mx-24 mx-4 text-4xl font-bold">Model Details:</div>
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             <p>
               The model is a CNN designed to The model is a Convolutional Neural
               Network designed to predict the ‘a’ and ‘b’ channels of the Lab
@@ -250,19 +258,19 @@ export default function ProjectPage({ params }: { params: any }) {
               </figcaption>
             </figure>
           </div>
-          <div className="mt-14 mx-24 text-3xl font-bold">
+          <div className="mt-14 sm:mx-24 mx-4 text-3xl font-bold">
             Key components of implementation:
           </div>
-          <div className="mt-10 mx-24 text-2xl font-bold">
+          <div className="mt-10 sm:mx-24 mx-4 text-2xl font-bold">
             1. Quantisation of the AB channels:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             The AB channels are quantised into 274 bins. The bins are determined
             by clustering the AB channels of the training data into 274 clusters
             using K-means clustering. The model then predicts the probability of
             each bin for every pixel.
           </div>
-          <div className="mt-4 mx-24">
+          <div className="mt-4 sm:mx-24 mx-4">
             <CopyBlock
               text={code1}
               language="python"
@@ -270,13 +278,13 @@ export default function ProjectPage({ params }: { params: any }) {
               theme={dracula}
             />
           </div>
-          <div className="mt-10 mx-24 text-2xl font-bold">
+          <div className="mt-10 sm:mx-24 mx-4 text-2xl font-bold">
             2. Converting AB channels to probability distribution:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             The AB channels are converted to a probability distribution.
           </div>
-          <div className="mt-4 mx-24">
+          <div className="mt-4 sm:mx-24 mx-4">
             <CopyBlock
               text={code2}
               language="python"
@@ -284,15 +292,15 @@ export default function ProjectPage({ params }: { params: any }) {
               theme={dracula}
             />
           </div>
-          <div className="mt-10 mx-24 text-2xl font-bold">
+          <div className="mt-10 sm:mx-24 mx-4 text-2xl font-bold">
             3. Loss function:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             The loss function is a variation of categorical crossentropy loss
             which includes components like class-rebalancing to account for the
             imbalance of colours in the dataset.
           </div>
-          <div className="mt-4 mx-24">
+          <div className="mt-4 sm:mx-24 mx-4">
             <CopyBlock
               text={code3}
               language="python"
@@ -300,14 +308,14 @@ export default function ProjectPage({ params }: { params: any }) {
               theme={dracula}
             />
           </div>
-          <div className="mt-10 mx-24 text-2xl font-bold">
+          <div className="mt-10 sm:mx-24 mx-4 text-2xl font-bold">
             4. Model architecture:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             The model is a CNN as described above. The model is trained on the
             training data for 1000 epochs.
           </div>
-          <div className="mt-4 mx-24">
+          <div className="mt-4 sm:mx-24 mx-4">
             <CopyBlock
               text={code4}
               language="python"
@@ -315,14 +323,14 @@ export default function ProjectPage({ params }: { params: any }) {
               theme={dracula}
             />
           </div>
-          <div className="mt-10 mx-24 text-2xl font-bold">
+          <div className="mt-10 sm:mx-24 mx-4 text-2xl font-bold">
             5. Converting probability distribution to AB channels:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             The probability distribution output by the model is converted back
             to AB channels after applying temperature scaling.
           </div>
-          <div className="mt-4 mx-24">
+          <div className="mt-4 sm:mx-24 mx-4">
             <CopyBlock
               text={code5}
               language="python"
@@ -341,10 +349,10 @@ export default function ProjectPage({ params }: { params: any }) {
               .
             </div>
           </div>
-          <div className="mt-14 mx-24 text-4xl font-bold">
+          <div className="mt-14 sm:mx-24 mx-4 text-4xl font-bold">
             Results and Model Evaluation:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             <p>
               In the paper, the team has employed a process similar to Turing
               Test to evaluate their model, but in this process I try to
@@ -358,7 +366,7 @@ export default function ProjectPage({ params }: { params: any }) {
               the model performs on anime inspired art.
             </p>
           </div>
-          <div className="mx-24 mt-8">
+          <div className="sm:mx-24 mx-4 mt-8">
             <div>
               <Image
                 src={"/projects/manga-colouring/output1.png"}
@@ -384,10 +392,10 @@ export default function ProjectPage({ params }: { params: any }) {
               />
             </div>
           </div>
-          <div className="mt-14 mx-24 text-4xl font-bold">
+          <div className="mt-14 sm:mx-24 mx-4 text-4xl font-bold">
             Improvements and Future Work:
           </div>
-          <div className="mt-6 mx-24 text-xl">
+          <div className="mt-6 sm:mx-24 mx-4 text-xl">
             <p>
               The model performs fairly well on the task of colouring manga
               images, but there is still room for improvement. It is correctly
@@ -398,8 +406,8 @@ export default function ProjectPage({ params }: { params: any }) {
             </p>
           </div>
           <div>
-            <div className="mt-14 mx-24 text-4xl font-bold">References:</div>
-            <div className="mt-6 mx-24 text-xl mb-10">
+            <div className="mt-14 sm:mx-24 mx-4 text-4xl font-bold">References:</div>
+            <div className="mt-6 sm:mx-24 mx-4 text-xl mb-10">
               <ul>
                 <li>
                   <a

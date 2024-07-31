@@ -24,8 +24,8 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        <div className="sm:w-[400px] w-fit h-full flex flex-row items-center justify-between md:mr-20">
-          <div className="flex items-center justify-between w-fit h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] sm:mr-[15px] sm:px-[20px] py-[10px] rounded-full text-gray-200">
+        <div className="sm:w-[400px] w-fit h-full flex flex-row items-center justify-between md:mr-10">
+          <div className="flex items-center justify-between w-fit h-auto border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] ml-[20px] sm:ml-[30px] sm:px-[20px] py-[10px] rounded-full text-gray-200">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.title}
